@@ -1,0 +1,6 @@
+{
+  "watch": ["src", "bin", "test", "scripts"],
+  "ext": ".ts,.js,.css",
+  "ignore": [],
+  "exec": "npm run build && ts-node -r dotenv/config ./src/app.ts dotenv_config_path=./.env.dev"
+}
