@@ -9,7 +9,7 @@ export default class UserRouter {
 
   constructor() {
     this.router.post(
-      "/",
+      "/signUp",
       RequestValidation.getHandler({
         dto: CreateUserDto,
         sourcePropertyName: "body",
