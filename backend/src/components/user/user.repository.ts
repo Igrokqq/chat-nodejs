@@ -25,4 +25,12 @@ export default class UserRepository implements UserRepositoryInterface {
   async createOne(user: CreateUserDto): Promise<void> {
     await this.userEntityRepository.save(user as UserEntity);
   }
+
+  getOneByEmail(email: string): Promise<UserEntity | null> {
+    return this.userEntityRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+  }
 }

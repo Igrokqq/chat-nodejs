@@ -1,10 +1,14 @@
+import config from "./src/common/config";
+
+const { host, port, username, password, database } = config.databases.pg;
+
 export default {
+  host,
+  port,
+  username,
+  password,
+  database,
   type: "postgres",
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT,
-  username: process.env.PG_USER,
-  password: process.env.PG_PASS,
-  database: process.env.PG_DB,
   synchronize: false,
   logging: false,
   entities: ["src/components/**/*.entity.ts", "dist/components/**/*.entity.js"],

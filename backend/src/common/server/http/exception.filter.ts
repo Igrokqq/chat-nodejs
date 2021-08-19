@@ -1,5 +1,5 @@
 import express from "express";
-import { Conflict, UnprocessableEntity } from "http-errors";
+import { Conflict, NotFound, UnprocessableEntity } from "http-errors";
 
 export default class HttpExceptionFilter {
   static listenExceptions(
@@ -12,6 +12,11 @@ export default class HttpExceptionFilter {
       return next(error);
     }
 
+    if (error instanceof NotFound) {
+      return res.status(404).json({
+        error: error.message,
+      });
+    }
     if (error instanceof UnprocessableEntity) {
       return res.status(422).json({
         error: error.message,
