@@ -9,6 +9,9 @@ export default class SocketIoServer implements ServerInterface {
   async run(): Promise<void> {
     this.wsServer = (io as any)(config.server.socketIo.port);
 
+    console.log(
+      `Socket server is running on ${config.server.socketIo.port} port`
+    );
     this.wsServer.on("connection", (socket: Socket) => {
       console.log("Socket connected");
       socket.on("connect_error", (error: Error) => {

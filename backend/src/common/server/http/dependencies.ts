@@ -6,7 +6,6 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { ServerDependenciesInterface } from "@common/server/interfaces";
 import config from "@common/config";
-import HttpExceptionFilter from "./exception.filter";
 
 export default class Dependencies implements ServerDependenciesInterface {
   applyTo(app: express.Application): void {
