@@ -1,7 +1,8 @@
 import CreateUserDto from "./dto/create-user.dto";
-import { UserExistsError } from "./user.errors";
+import { UserEntity } from "./user.entity";
+import { UserExistsError, UserNotExistsError } from "./user.errors";
 import UserRepository from "./user.repository";
-import { SignUpResponse } from "./user.responses";
+import { GetUserByEmailResponse, SignUpResponse } from "./user.responses";
 
 export default class UserService {
   private readonly userRepository: UserRepository = new UserRepository();
@@ -16,5 +17,17 @@ export default class UserService {
     }
 
     await this.userRepository.createOne(dto);
+  }
+
+  async getUserByEmail(email: string): Promise<GetUserByEmailResponse> {
+    const user: UserEntity | null = await this.userRepository.getOneByEmail(
+      email
+    );
+
+    if (!user) {
+      return new UserNotExistsError();
+    }
+
+    return user;
   }
 }

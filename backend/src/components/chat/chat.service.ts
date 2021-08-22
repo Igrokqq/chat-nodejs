@@ -14,4 +14,8 @@ export default class ChatService {
   getAll(): Promise<ChatEntity[]> {
     return this.chatRepository.getAll();
   }
+
+  getUserChats(userId: number): Promise<ChatEntity[]> {
+    return this.chatRepository.getUserChats(userId);
+  }
 }

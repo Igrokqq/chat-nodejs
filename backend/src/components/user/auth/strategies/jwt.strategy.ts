@@ -12,6 +12,7 @@ import {
 } from "@components/user/user.errors";
 import { JwtLoginResponse } from "../auth.responses";
 import { UserEntity } from "@components/user/user.entity";
+import LogoutDto from "../dto/logout.dto";
 
 export type JwtTokens = {
   readonly accessToken: string;
@@ -80,10 +81,33 @@ export default class JwtStrategy implements AuthStrategy {
           if (error) {
             return reject(false);
           }
+          delete decoded.iat;
+          delete decoded.exp;
 
           resolve(decoded);
         }
       );
     });
+  }
+
+  async logout(dto: LogoutDto): Promise<void> {
+    const userRefreshTokensKey = `user-refresh-tokens-${dto.email}`;
+    const refreshTokens: string | undefined = await this.redis.get(
+      `user-refresh-tokens-${dto.email}`
+    );
+
+    await this.redis.set(
+      userRefreshTokensKey,
+      refreshTokens
+        ? JSON.stringify(
+            JSON.parse(refreshTokens).filter(
+              (token: string): boolean => token !== dto.refreshToken
+            )
+          )
+        : undefined,
+      {
+        ttl: config.auth.jwt.refreshTtl,
+      }
+    );
   }
 }

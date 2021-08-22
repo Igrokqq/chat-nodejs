@@ -13,4 +13,13 @@ export default class ChatController extends BaseHttpController {
       message: "OK",
     });
   }
+
+  async getUserChats(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    this.ok(res, {
+      body: await this.chatService.getUserChats(req.body.userId),
+    });
+  }
 }

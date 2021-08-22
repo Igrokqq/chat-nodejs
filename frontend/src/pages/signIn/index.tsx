@@ -5,16 +5,16 @@ import AuthLayout from "../../layouts/auth";
 import * as eventBus from "../../common/eventBus";
 import { EVENTS } from "../../components/v1/signInForm/presenter";
 import { useMutation } from "react-query";
-import { JwtTokens, signIn } from "../../api/auth.api";
-import * as LocalStorage from "../../common/localStorage";
+import { SignInResponse } from "../../api/auth.api";
+import AuthHelper from "../../helpers/auth.helper";
+import { ComponentReduxProps } from "../../redux/types";
 
 const MAX_VISIBLE_ERRORS = 3;
 
-export default function SignIn(): JSX.Element {
+export default function SignIn({ dispatch }: ComponentReduxProps): JSX.Element {
 	const [errors ,setErrors] = useState([""]);
-	const signInMutation = useMutation(signIn, {
-		onSuccess(tokens: JwtTokens) {
-			LocalStorage.setItem("user:tokens", tokens)
+	const signInMutation = useMutation(AuthHelper.signIn, {
+		onSuccess(_tokens: SignInResponse) {
 			window.location.href = "/";
 		},
 		onError(error: Error): void {

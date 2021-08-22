@@ -51,7 +51,7 @@ export default class Redis {
   set(
     key: string,
     data: string,
-    options?: RedisSetOptions
+    options: RedisSetOptions = {}
   ): Promise<"OK" | never> {
     return new Promise((resolve, reject) => {
       const callback = (error: Error, result: "OK") => {
@@ -65,6 +65,17 @@ export default class Redis {
       } else {
         this.client.set(key, data, callback);
       }
+    });
+  }
+
+  del(key: string): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.client.del(key, (error: Error, reply: number) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(reply);
+      });
     });
   }
 }

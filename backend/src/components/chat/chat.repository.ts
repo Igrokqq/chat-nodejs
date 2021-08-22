@@ -21,4 +21,12 @@ export default class ChatRepository implements ChatRepositoryInterface {
   getAll(): Promise<ChatEntity[]> {
     return this.chatEntityRepository.find();
   }
+
+  getUserChats(userId: number): Promise<ChatEntity[]> {
+    return this.chatEntityRepository.find({
+      where: {
+        ownerId: userId,
+      },
+    });
+  }
 }

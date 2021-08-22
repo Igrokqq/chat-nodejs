@@ -1,5 +1,10 @@
 import express from "express";
-import { Conflict, NotFound, UnprocessableEntity } from "http-errors";
+import {
+  Conflict,
+  NotFound,
+  Unauthorized,
+  UnprocessableEntity,
+} from "http-errors";
 
 export default class HttpExceptionFilter {
   static listenExceptions(
@@ -27,7 +32,11 @@ export default class HttpExceptionFilter {
         error: error.message,
       });
     }
-
+    if (error instanceof Unauthorized) {
+      return res.status(401).json({
+        error: error.message,
+      });
+    }
     res.status(500).json({
       error: error.message,
     });
