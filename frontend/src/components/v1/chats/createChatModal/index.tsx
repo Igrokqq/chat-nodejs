@@ -1,16 +1,26 @@
-import { Modal, Button } from "react-bootstrap";
+import { ReactPropTypes, Props as ReactProps, useEffect } from "react";
+import { Modal } from "react-bootstrap";
+import { EVENTS as CREATE_CHAT_FORM_EVENTS} from "../createChatForm/presenter";
 import  * as eventBus from "../../../../common/eventBus";
+import styles from "./createChatModal.module.css";
 
 export const EVENTS = {
 	CLOSE: "createChatModal:close"
 }
-type Props = {
+type Props = ReactProps<ReactPropTypes> & {
 	readonly show: boolean;
 }
-export default function CreateChatModal(props: Props): JSX.Element {
+export default function ModaCreateChatModal(props: Props): JSX.Element {
 	const onClose = () => {
 		eventBus.trigger(EVENTS.CLOSE, {})
 	}
+	useEffect(() => {
+		eventBus.on(CREATE_CHAT_FORM_EVENTS.SUBMIT, onClose);
+		return (): void => {
+			eventBus.off(CREATE_CHAT_FORM_EVENTS.SUBMIT, onClose);
+		}
+	}, [])
+
 	return (
 		<Modal
 			show={props.show}
@@ -18,22 +28,14 @@ export default function CreateChatModal(props: Props): JSX.Element {
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
 		>
-			<Modal.Header closeButton onClick={onClose}>
-				<Modal.Title id="contained-modal-title-vcenter">
-					Modal heading
-				</Modal.Title>
-			</Modal.Header>
+			<Modal.Header
+			  className={styles.closeButton}
+				onClick={onClose}
+				closeButton
+			></Modal.Header>
 			<Modal.Body>
-				<h4>Centered Modal</h4>
-				<p>
-					Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-					dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-					consectetur ac, vestibulum at eros.
-				</p>
+				{props.children}
 			</Modal.Body>
-			<Modal.Footer>
-				<Button onClick={onClose}>Close</Button>
-			</Modal.Footer>
 		</Modal>
 	)
 }

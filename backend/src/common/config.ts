@@ -35,6 +35,9 @@ export default {
     },
     socketIo: {
       port: process.env.SOCKETIO_PORT,
+      corsOptions: {
+        origin: "*",
+      },
     },
   },
 };

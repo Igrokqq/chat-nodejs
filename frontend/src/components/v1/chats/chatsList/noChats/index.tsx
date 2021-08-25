@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CreateChatModal from "../../createChatModal";
 import styles from "./noChats.module.css";
 import NoChatsText from "./noChatsText";
-import { EVENTS as  CREATE_CHAT_EVENTS } from "../../createChatModal";
+import CreateChatModal, { EVENTS as  CREATE_CHAT_EVENTS } from "../../createChatModal";
 import * as eventBus from "../../../../../common/eventBus";
 import { Button } from "react-bootstrap";
+import CreateChatForm from "../../createChatForm";
 
 export default function NoChats(): JSX.Element {
 	const [createChatModalVisible, setCreateChatModalVisible] = useState(false);
@@ -26,7 +26,9 @@ export default function NoChats(): JSX.Element {
 
 	return (
 		<div className={styles.container}>
-			<CreateChatModal show={createChatModalVisible}/>
+			<CreateChatModal show={createChatModalVisible}>
+				<CreateChatForm isSubmitDisabled={false} />
+			</CreateChatModal>
 			<NoChatsText />
 			<div>
 				<Button className="w-50 mt-4" variant="dark" onClick={openCreateChatModal}>New Chat</Button>

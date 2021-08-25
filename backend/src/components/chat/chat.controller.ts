@@ -19,7 +19,9 @@ export default class ChatController extends BaseHttpController {
     res: express.Response
   ): Promise<void> {
     this.ok(res, {
-      body: await this.chatService.getUserChats(req.body.userId),
+      body: await this.chatService.getUserChats(
+        parseInt(req.query.userId as string, 10)
+      ),
     });
   }
 }

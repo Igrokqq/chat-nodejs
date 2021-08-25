@@ -10,6 +10,11 @@ import { ComponentReduxProps } from '../../redux/types';
 import RedirectIfAuthenticated from '../../routes/redirect-if-authenticated';
 import RedirectIfUnauthenticated from '../../routes/redirect-if-unauthenticated';
 import routes from "./routes";
+import io from "socket.io-client";
+import config from '../../config';
+import Chat from '../../pages/chat';
+
+const socket = (io as any)(config.api.socketIo.baseUrl);
 const queryClient = new QueryClient()
 
 function App(props: ComponentReduxProps): JSX.Element {
@@ -23,7 +28,14 @@ function App(props: ComponentReduxProps): JSX.Element {
             <RedirectIfUnauthenticated
               redirectTo={routes.SIGN_IN}
               path={routes.HOME}
-              render={() => <Home />}
+              render={() => <Home socket={socket}/>}
+              isAuthenticated={isAuthenticated}
+              exact={true}
+            />
+            <RedirectIfUnauthenticated
+              redirectTo={routes.SIGN_IN}
+              path={routes.CHAT}
+              render={() => <Chat socket={socket}/>}
               isAuthenticated={isAuthenticated}
               exact={true}
             />
@@ -33,6 +45,7 @@ function App(props: ComponentReduxProps): JSX.Element {
               isAuthenticated={isAuthenticated}
               render={() => <SignIn {...props}/>}
               exact={true}
+              socket={socket}
             />
             <RedirectIfAuthenticated
               redirectTo={routes.HOME}

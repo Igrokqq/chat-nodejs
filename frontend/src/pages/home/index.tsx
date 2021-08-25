@@ -6,7 +6,7 @@ import { UserEntity } from "../../api/user.api";
 import AuthHelper from "../../helpers/auth.helper";
 import ChatHelper from "../../helpers/chat.helper";
 
-export default function Home(): JSX.Element {
+export default function Home({ socket }: any): JSX.Element {
 	const {
 		data: chats,
 		isLoading: chatsStillLoading
@@ -14,14 +14,14 @@ export default function Home(): JSX.Element {
 		const user: UserEntity | null = AuthHelper.getUser();
 
 		if (user) {
-			return ChatHelper.getUserChats(user.id)
+			return ChatHelper.getUserChats(user.id, AuthHelper.getJwtAccessToken() || "")
 		}
 	});
 
 	return (
 		<DefaultLayout>
 			<Container className="mt-5">
-				{chatsStillLoading ? "Loading chats..."  : <ChatsList chats={chats || []} />}
+				{chatsStillLoading ? "Loading chats..."  : <ChatsList chats={chats || []} socket={socket}/>}
 			</Container>
 		</DefaultLayout>
 	)

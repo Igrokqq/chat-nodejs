@@ -7,7 +7,9 @@ export default class SocketIoServer implements ServerInterface {
   private wsServer: io.Server;
 
   async run(): Promise<void> {
-    this.wsServer = (io as any)(config.server.socketIo.port);
+    this.wsServer = (io as any)(config.server.socketIo.port, {
+      cors: config.server.socketIo.corsOptions,
+    });
 
     console.log(
       `Socket server is running on ${config.server.socketIo.port} port`

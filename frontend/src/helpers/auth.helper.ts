@@ -18,6 +18,15 @@ const _getUserFromLocalStorage = (): UserEntity | null => {
   return LocalStorage.getItem("user");
 }
 const AuthHelper =  {
+  getJwtAccessToken(): string | null {
+    const tokens: SignInResponse | null = _getJwtTokensFromLocalStorage();
+
+    if (tokens) {
+      return tokens.accessToken;
+    }
+
+    return null;
+  },
   getJwtTokens(): SignInResponse {
     const tokens: SignInResponse | null = _getJwtTokensFromLocalStorage();
 
@@ -34,7 +43,6 @@ const AuthHelper =  {
   },
   async logout(logoutPayload: AuthApi.LogoutPayload): Promise<void> {
     await AuthApi.logout(logoutPayload);
-    LocalStorage.clear();
   },
   async signUp(user: SignUpFieldsData): Promise<void> {
     await UserApi.signUp(user);

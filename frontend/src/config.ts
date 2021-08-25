@@ -8,6 +8,9 @@ const config = {
 	},
 	api: {
 		baseUrl: env.REACT_APP_API_BASE_URL,
+		socketIo: {
+			baseUrl: env.REACT_APP_SOCKETIO_BASE_URL
+		}
 	}
 };
 
